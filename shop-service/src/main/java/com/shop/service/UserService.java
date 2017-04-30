@@ -1,6 +1,5 @@
 package com.shop.service;
 
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -8,12 +7,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.shop.core.base.exception.ParamException;
+import com.shop.core.dto.UserDto;
 import com.shop.core.model.User;
 import com.shop.dao.UserDao;
 
+import sun.util.logging.resources.logging;
+
 @Service
 public class UserService {
+	
 
 	@Autowired
 	private UserDao userDao;
@@ -51,6 +56,15 @@ public class UserService {
 		return count;
 	}
 	
+	public PageList<User> selectForPage(UserDto userDto){
+		//构造PageBounds
+		PageBounds pageBounds=userDto.toPageBounds();
+		
+		PageList<User> result=(PageList<User>)userDao.selectForPage(userDto.getUname(), pageBounds);
+		
+		logger.info("paginator:{}",result.getPaginator());
+		return result;
+	}
 	
 	
 	

@@ -10,14 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.shop.core.base.BaseController;
+import com.shop.core.base.ResultListInfo;
+import com.shop.core.dto.UserDto;
 import com.shop.core.model.User;
 import com.shop.service.UserService;
 
 @RestController
 @RequestMapping(value="user")
-public class UserController {
+public class UserController extends BaseController{
 	
 	
 	@Resource
@@ -66,5 +71,14 @@ public class UserController {
 	}
 	
 	
-	
+	@SuppressWarnings("unchecked")
+	@GetMapping("list.json")
+	@ResponseBody
+	public ResultListInfo<User> selectForPageJSON(UserDto userDto){
+		
+		PageList<User> users=userService.selectForPage(userDto);
+		ResultListInfo<User> result=buildsuccessResultList(users, userDto);
+		return result;
+		
+	}
 }

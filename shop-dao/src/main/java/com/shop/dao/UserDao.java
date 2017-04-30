@@ -7,10 +7,12 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.shop.core.model.User;
 
 @Mapper()
@@ -32,4 +34,7 @@ public interface UserDao {
 	
 	@Select("select * from user")
 	List<User> queryUsersByParams();
+	
+	@Select("select * from user")
+	List<User> selectForPage(@Param("uname")String uname,PageBounds pageBounds);
 }
